@@ -1,5 +1,7 @@
 import sys
+from dotenv import load_dotenv
 from langchain_ollama import ChatOllama
+load_dotenv()
 
 def main():
     sys.stdout.reconfigure(encoding="utf-8")

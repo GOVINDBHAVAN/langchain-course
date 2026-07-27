@@ -9,3 +9,5 @@
 - uv init
 - uv add langchain
 - uv add langchain-ollama
+- uv add python-dotenv
+- 
