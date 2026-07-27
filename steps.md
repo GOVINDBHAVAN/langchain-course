@@ -7,4 +7,5 @@
 - # uv is package manager like pip
 - uv --help
 - uv init
-- 
+- uv add langchain
+- uv add langchain-ollama
