@@ -1,5 +1,17 @@
 from langchain.tools import tool
 
+# create a @tool decorator that returns current date.
+@tool
+def get_current_date() -> str:
+    """ Get the current date.
+
+    Returns:
+        str: A string containing the current date in YYYY-MM-DD format.
+    """
+    from datetime import datetime
+    current_date = datetime.now().strftime("%Y-%m-%d")
+    return f"Today's date is {current_date}."
+
 # create another @tool decorator which takes a query and returns city weather information from a weather API
 @tool
 def get_city_weather(city: str) -> str:
