@@ -23,6 +23,9 @@
 
 - using now qwen2.5:3b-instruct to work on my laptop, because qwen3:4b was not working properly fully.
 
-# LangSmith
+# SearchAgent
 
-- uv add langchain-openai
+- git -C langchain-course checkout -b search-agent
+- uv add langchain-tavily
+- # tavily is a popular choice to integrate web-search into the agent.
+- 
