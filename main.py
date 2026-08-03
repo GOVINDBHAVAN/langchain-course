@@ -21,7 +21,7 @@ def main():
     start_time = time.perf_counter()
     print("Welcome to the Search Agent!")
     chat_agent = ChatAgent()
-    result = chat_agent.agent.invoke({"messages": [HumanMessage(content="Display current date, Get the weather for 'New York' and search the database for 'Document 2'")]})
+    result = chat_agent.agent.invoke({"messages": [HumanMessage(content="Display current date, Today's weather for 'New York' and search the database for 'Document 2', also get the tomorrow's weather and display tomorrow's date")]})
     # print number of tool calls made by the agent
     tool_call_count = sum(len(getattr(message, "tool_calls", []) or []) for message in result["messages"])
     print(f"Number of tool calls made by the agent: {tool_call_count}")
