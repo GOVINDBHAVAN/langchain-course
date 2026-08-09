@@ -1,4 +1,7 @@
 from langchain.tools import tool
+from langchain_tavily import TavilySearch
+
+tavily_search = TavilySearch(max_results=5)
 
 # create a @tool decorator that returns current date.
 @tool
@@ -24,9 +27,24 @@ def get_city_weather(city: str) -> str:
         str: A string containing the weather information for the city.
     """
     print(f"Fetching weather information for {city}...")
-    # For demonstration purposes, we will return a static weather report.
-    # In a real implementation, you would call a weather API here.
-    return f"The weather in {city} is sunny with a temperature of 25°C and humidity of 60%."
+    results = tavily_search.invoke({"query": f"current weather in {city}"})
+    return results.get("answer") or str(results.get("results", []))
+
+# create a general-purpose @tool decorator for web search (jobs, news, etc.) via Tavily
+@tool
+def web_search(query: str, topic: str = "general") -> str:
+    """ Perform a general-purpose web search for things like jobs, news, or any other topic.
+
+    Args:
+        query (str): The search query, e.g. "software engineer jobs in Mumbai" or "latest AI news".
+        topic (str, optional): The search topic category. One of "general", "news", or "finance". Defaults to "general".
+
+    Returns:
+        str: A string containing the search results.
+    """
+    print(f"Searching the web for '{query}' (topic: {topic})...")
+    results = tavily_search.invoke({"query": query, "topic": topic})
+    return results.get("answer") or str(results.get("results", []))
 
 # create a search_database @tool decorator which takes a query and returns a list of relevant documents from a database
 @tool

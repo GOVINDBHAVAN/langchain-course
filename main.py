@@ -6,22 +6,40 @@ from langchain.agents import create_agent
 from langchain.tools import tool
 from langchain_core.messages import HumanMessage
 from langchain_ollama import ChatOllama
-from lib.search_database import search_database, get_city_weather, get_current_date
+from lib.search_database import search_database, get_city_weather, get_current_date, web_search
 
 
 class ChatAgent:
     def __init__(self):
         self.llm = ChatOllama(model="qwen2.5:3b-instruct", keep_alive="30m")
-        self.tools = [search_database, get_city_weather, get_current_date]
+        self.tools = [search_database, get_city_weather, get_current_date, web_search]
+        # self.tools = []
         self.agent = create_agent(model=self.llm, tools=self.tools)
-
 
 def main():
     # sys.stdout.reconfigure(encoding="utf-8")
     start_time = time.perf_counter()
     print("Welcome to the Search Agent!")
     chat_agent = ChatAgent()
-    result = chat_agent.agent.invoke({"messages": [HumanMessage(content="Display current date, Today's weather for 'New York' and search the database for 'Document 2', also get the tomorrow's weather and display tomorrow's date")]})
+    # result = chat_agent.agent.invoke({"messages": [HumanMessage(content="1) Display current date, 2) Today's weather for 'Mumbai', 3) Search the database for 'Document 2', 4) Find the latest AI news, and 5) Find software engineer top 3 job openings in Mumbai")]})
+    result = chat_agent.agent.invoke(
+        {"messages": [HumanMessage(content="Do a web search for Microsoft, and display it's latest stock price")]})
+    # print number of tool calls made by the agent
+    tool_call_count = sum(len(getattr(message, "tool_calls", []) or []) for message in result["messages"])
+    print(f"Number of tool calls made by the agent: {tool_call_count}")
+    print(f"Agent response: {result['messages'][-1].content}")
+
+    elapsed_time = time.perf_counter() - start_time
+    print(f"Execution time: {elapsed_time:.2f} seconds")
+
+def main2():
+    # sys.stdout.reconfigure(encoding="utf-8")
+    start_time = time.perf_counter()
+    print("Welcome to the Search Agent!")
+    chat_agent = ChatAgent()
+    # result = chat_agent.agent.invoke({"messages": [HumanMessage(content="1) Display current date, 2) Today's weather for 'Mumbai', 3) Search the database for 'Document 2', 4) Find the latest AI news, and 5) Find software engineer top 3 job openings in Mumbai")]})
+    result = chat_agent.agent.invoke(
+        {"messages": [HumanMessage(content="1) calculate 2+3, 2) calculate 3+4, 3) calculate 4+5. Do the above calculation and display the results in a list format")]})
     # print number of tool calls made by the agent
     tool_call_count = sum(len(getattr(message, "tool_calls", []) or []) for message in result["messages"])
     print(f"Number of tool calls made by the agent: {tool_call_count}")
