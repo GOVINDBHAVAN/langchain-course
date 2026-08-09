@@ -28,4 +28,8 @@
 - git -C langchain-course checkout -b search-agent
 - uv add langchain-tavily
 - # tavily is a popular choice to integrate web-search into the agent.
-- 
+
+# Pydantic library
+
+- Pydantic is the most popular data validation and parsing library for Python
+- pydantic object is the agent response format, Base-class provide data parsing, serialization, automatic type validation, Field class allow meta-data to over our model objects
